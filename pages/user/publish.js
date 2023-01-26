@@ -1,16 +1,25 @@
+import { useState } from 'react'
+import { useDropzone } from 'react-dropzone'
 import { 
   Box,
   Button,
   Container,
+  IconButton,
   makeStyles,
   Select,
   TextField,
   Typography,
 } from '@material-ui/core'
 
+
+import { DeleteForever } from '@material-ui/icons'
+
 import TemplateDefault from '../../src/templates/Default'
 
 const useStyles = makeStyles((theme) => ({
+  mask: {},
+  mainImage: {},
+
   container: {
     padding: theme.spacing(8, 0, 6)
   },
@@ -22,12 +31,87 @@ const useStyles = makeStyles((theme) => ({
   box: {
     backgroundColor: theme.palette.background.white,
     padding: theme.spacing(3),
+  },
+
+  thumbsContainer: {
+    display: 'flex',
+    marginTop: 15,
+    flexWrap: 'wrap',
+  },
+
+  dropzone: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    padding: 10,
+    margin: '0 15px 15px 0',
+    width: 200,
+    height: 150,
+    backgroundColor: theme.palette.background.default,
+    border: '2px dashed black',
+    cursor: 'pointer',
+  },
+
+  thumb: {
+    width: 200,
+    height: 150,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    position: 'relative',
+    margin: '0 15px 15px 0',
+
+    '& $mainImage' : {
+      backgroundColor: 'blue',
+      padding: '6px 10px',
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+    },
+
+    '&:hover $mask': {
+      display: 'flex'
+    },
+
+    '& $mask': {
+      display: 'none',
+      backgroundColor: 'rgba(0, 0, 0, 0.7)',
+      height: '100%',
+      width: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      textAlign: 'center',
+    }
   }
 
 }))
 
 const Publish = () => {
   const classes = useStyles()
+
+  const [files, setFiles] = useState([])
+
+  const { getRootProps, getInputProps, open } = useDropzone({
+    accept: 'image/*', 
+    onDrop: (acceptedFile) => {
+      const newFiles = acceptedFile.map(file => {
+        return Object.assign(file, { //cria novo objeto do zero
+          preview: URL.createObjectURL(file)
+        })
+      })
+
+      setFiles([
+        ...files,
+        ...newFiles
+      ])
+    },
+    noClick: true
+  })
+
+  const handleRemoveFile = fileName => {
+    const newFileState = files.filter(file => file.name !== fileName )
+    setFiles(newFileState)
+  }
 
   return (
     
@@ -92,6 +176,46 @@ const Publish = () => {
           <Typography component='div' variant='body2' color='textPrimary' gutterBottom>
               A primeira imagem é a foto principal do seu anúncio
           </Typography>
+          <Box className={classes.thumbsContainer} {...getRootProps()}>
+            
+            <Box className={classes.dropzone} onClick={open}>
+              <input {...getInputProps()} />
+              <Typography variant='body2' color='textPrimary' gutterBottom>
+                Clique para adicionar ou arraste a imagem aqui...
+              </Typography>
+            </Box>
+
+            {
+              files.map((file, index) => (
+                <Box
+                  key={file.name}
+                  className={classes.thumb}
+                  style={{backgroundImage: `url(${file.preview})`}}
+                >
+                  {
+                    index === 0 ?
+                      <Box className={classes.mainImage}>
+                        <Typography variant='body' color='secondary'>
+                          Principal
+                        </Typography>
+                      </Box>
+                      : null
+
+                  }
+                  
+                  <Box className={classes.mask}>
+                    <IconButton color='secondary' onClick={() => handleRemoveFile(file.name)}>
+                      <DeleteForever fontSize='large' />
+                    </IconButton>
+                  </Box>
+    
+                </Box>
+
+              ))
+            }
+
+          </Box>
+
         </Box>
       </Container>
 
