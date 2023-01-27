@@ -16,7 +16,7 @@ import TemplateDefault from '../src/templates/Default'
 
 const useStyles = makeStyles((theme) => ({
   searchContainer: {
-    padding: theme.spacing(8, 10, 6)
+    padding: theme.spacing(8, 8, 2)
   },
   
   searchBox: {
@@ -59,7 +59,7 @@ return(
           <br />
       </Container>
 
-      <Container maxWidth='md' className={classes.cardGrid}>
+      <Container maxWidth='lg' className={classes.cardGrid}>
 
           <Grid container spacing={4}>
 
