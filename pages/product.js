@@ -1,4 +1,17 @@
-import { Avatar, Box, Card, CardHeader, CardMedia, Chip, Container, Grid, makeStyles, Typography } from '@material-ui/core'
+import {
+  Avatar,
+  Box,
+  Card,
+  CardHeader,
+  CardMedia,
+  Chip,
+  Container,
+  Grid,
+  makeStyles,
+  Typography 
+} from '@material-ui/core'
+import Carousel from 'react-material-ui-carousel'
+
 import TemplateDefault from '../src/templates/Default'
 
 const useStyles = makeStyles((theme) => ({
@@ -15,6 +28,14 @@ const useStyles = makeStyles((theme) => ({
   price: {
     fontWeight: 'bold',
     marginBottom: 15,
+  },
+
+  card: {
+    height: '100%'
+  },
+
+  cardMedia: {
+    paddingTop: '56%'
   }
 }))
 
@@ -27,8 +48,40 @@ const Product = () => {
       <Container maxWidth='lg'>
         <Grid container spacing={3}>
           <Grid item xs={8}>
+
+            {/* Carrossel de Imagens */}
+
             <Box className={classes.box}>
-              Carrossel
+              <Carousel
+                animation='slide'
+                navButtonsProps={{         
+                  style: {
+                      backgroundColor: 'white',
+                      color: 'black'                
+                  }
+              }} 
+              >
+                <Card className={classes.card}>
+                  <CardMedia
+                    className={classes.cardMedia}
+                    image='https://source.unsplash.com/random?a=2'
+                    title='Título da Imagem'
+                  />
+                </Card>
+
+                <Card className={classes.card}>
+                  <CardMedia
+                    className={classes.cardMedia}
+                    image='https://source.unsplash.com/random?a=1'
+                    title='Título da Imagem'
+                  />
+                </Card>
+              </Carousel>
+              
+              
+
+              
+
             </Box>
 
             <Box className={classes.box}>
