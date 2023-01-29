@@ -7,7 +7,7 @@ import {
   Typography
 } from '@material-ui/core'
 
-import { makeStyles, ThemeProvider } from '@material-ui/styles'
+import { makeStyles } from '@material-ui/styles'
 import SearchIcon from '@material-ui/icons/Search'
 
 import Card from '../src/components/Card'
