@@ -10,6 +10,7 @@ import {
   FormControl,
   FormHelperText,
   IconButton,
+  Input,
   InputAdornment,
   InputLabel,
   makeStyles,
@@ -36,6 +37,11 @@ const useStyles = makeStyles((theme) => ({
   box: {
     backgroundColor: theme.palette.background.white,
     padding: theme.spacing(3),
+  },
+
+  inputLabel: {
+    fontWeight: 400,
+    color: theme.palette.primary.main,
   },
 
   thumbsContainer: {
@@ -98,7 +104,11 @@ const validationSchema = yup.object().shape({
     .max(100, 'Título muito grande')
     .required('Campo obrigatório'),
 
-    category: yup.string().required('Campo obrigatório')
+  category: yup.string().required('Campo obrigatório'),
+
+  description: yup.string()
+    .min(50, 'Escreva uma descrição com pelo menos 50 caracteres')
+    .required('Campo obrigatório'),
 
 })
 
@@ -147,6 +157,7 @@ const Publish = () => {
         initialValues={{
           title: '',
           category:'',
+          description:'',
         }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
@@ -161,33 +172,32 @@ const Publish = () => {
             handleSubmit,
           }) => {
 
-            console.log(errors)
+            console.log(values)
+            
 
             return(
 
               <form onSubmit={handleSubmit}>
                 <Container maxWidth='md' className={classes.boxContainer}>
                   <Box className={classes.box}>
-                    <Typography component='h6' variant='h6' color='textPrimary' gutterBottom>
-                      Título do anúncio
-                    </Typography>
-                    <TextField
-                      name='title'
-                      value={values.title}
-                      onChange={handleChange}
-                      label='ex.: Bicicleta aro 18 com garantia'
-                      size='small'
-                      fullWidth
-                      error={errors.title}
-                      helperText={errors.title}
-                    />
+                    
+                    <FormControl fullWidth error={errors.title}>
+                      <InputLabel className={classes.inputLabel}>Título do Anúncio</InputLabel>
+                      <Input
+                        name='title'
+                        value={values.title}
+                        onChange={handleChange}                
+                      />
+                      <FormHelperText>
+                        {errors.title}                        
+                      </FormHelperText>
+
+                    </FormControl>
 
                     <br /><br />
 
-                    <Typography component='h6' variant='h6' color='textPrimary' gutterBottom>
-                      Categoria
-                    </Typography>
                     <FormControl fullWidth error={errors.category}>
+                      <InputLabel className={classes.inputLabel}>Categoria</InputLabel>
                       <Select 
                         name='category'
                         value={values.category}
@@ -210,10 +220,13 @@ const Publish = () => {
                         <MenuItem value='Outros'>Outros</MenuItem>
                       
                       </Select>
+
                       <FormHelperText>
                         {errors.category}
                       </FormHelperText>
+
                     </FormControl>
+
                   </Box>
                 </Container>
 
@@ -270,19 +283,21 @@ const Publish = () => {
 
                 <Container maxWidth='md' className={classes.boxContainer}>
                   <Box className={classes.box}>
-                    <Typography component='h6' variant='h6' color='textPrimary' gutterBottom>
-                        Descrição
-                    </Typography>
-                    <Typography component='div' variant='body2' color='textPrimary' gutterBottom>
-                        Escreva os detalhes do que está vendendo
-                    </Typography>
 
-                    <TextField
-                      multiline
-                      rows={6}
-                      variant='outlined'
-                      fullWidth            
-                    />
+                    <FormControl fullWidth error={errors.description}>
+                      <InputLabel className={classes.inputLabel}>Escreva os detalhes do que está vendendo</InputLabel>
+                      <Input
+                        name='description'
+                        multiline
+                        rows={6}
+                        variant='outlined' 
+                      />
+                      <FormHelperText>
+                        {errors.description}
+                      </FormHelperText>
+
+                    </FormControl>
+
                   </Box>
                 </Container>
 
