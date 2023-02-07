@@ -1,8 +1,12 @@
 import { Formik } from 'formik'
 
+import axios from 'axios'
+import { useRouter } from 'next/router'
+
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   FormControl,
   FormHelperText,
@@ -14,21 +18,42 @@ import {
 import { initialValues, validationSchema } from './formValues'
 import TemplateDefault from '../../../src/templates/Default'
 
+import useToasty from '../../../src/contexts/Toasty'
 import useStyles from './styles'
+
 
 const Signup = () => {
 
   const classes = useStyles()
+  const router = useRouter()
+  const { setToasty } = useToasty()
+  
+  const handleFormSubmit = async values => {
+    const response = await axios.post('/api/users', values)
+
+    console.log(response)
+
+    if (response.data.success) {
+      console.log('dados cadastrados com sucesso!')
+      setToasty({
+        open: true,
+        severity: 'success',
+        text: 'Cadastro Realizado com sucesso!!'
+      })
+
+      router.push('/auth/signin')
+    }
+  }
 
   return (
     <TemplateDefault>
 
       <Container maxWidth='md' className={classes.boxContainer}>
-        <Typography component='h1' variant='h2' align='center' color='textPrimary'>
+        <Typography component='h1' variant='h2' textalign='center' color='textPrimary'>
             Crie sua conta
         </Typography>
 
-        <Typography component='h2' variant='subtitle1' align='center' color='textPrimary'>
+        <Typography component='h2' variant='subtitle1' textalign='center' color='textPrimary'>
             E anuncie para todo o Brasil
         </Typography>
       </Container>
@@ -36,15 +61,14 @@ const Signup = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          console.log('ok', values)
-        }}
+        onSubmit={handleFormSubmit}
       >
         {
           ({
             touched,
             values,
             errors,
+            isSubmitting,
             handleChange,
             handleSubmit,
             setFieldValue,
@@ -114,13 +138,26 @@ const Signup = () => {
                     <br /><br />
 
                     <Box textAlign='left' className={classes.boxButton}>
-                      <Button type='submit' variant='contained' color='primary' fullWidth className={classes.button}>
-                        Cadastrar
-                      </Button>
+                      {
+                        isSubmitting 
+                          ? (
+                            <CircularProgress className={classes.loading} />
+                          ) : (
+                            <Button
+                              type='submit'
+                              variant='contained'
+                              color='primary'
+                              fullWidth
+                              className={classes.button}>
+                                Cadastrar
+                            </Button>
+                          )
+                      }
+                      
                     
                       <br />
 
-                      <Typography component='a' variant='body2' textAlign='left' color='textPrimary'>
+                      <Typography component='a' variant='body2' textalign='left' color='textPrimary'>
                           Já tem uma conta? Clique aqui 
                       </Typography>
                     </Box>

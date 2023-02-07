@@ -25,6 +25,11 @@ const useStyles = makeStyles((theme) => ({
 
   button: {
     marginBottom: theme.spacing(1),
+  },
+
+  loading: {
+    display: 'block',
+    margin: '10px auto',
   }
 
 }))
