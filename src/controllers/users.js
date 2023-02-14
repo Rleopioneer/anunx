@@ -1,10 +1,10 @@
-import USersModel from '../models/users'
+import UsersModel from '../models/users'
 import dbConnect from '../utils/dbConnect'
 import { crypto } from '../utils/password'
 
 const get = async (req, res) => {
   await dbConnect()
-  const users = await USersModel.find()
+  const users = await UsersModel.find()
   res.status(200).json({ success: true, users })
 }
 
@@ -19,7 +19,7 @@ const post = async (req, res) => {
 
   const passwordCrypto = await crypto(password)
 
-  const user = new USersModel({
+  const user = new UsersModel({
     name,
     email,
     password: passwordCrypto

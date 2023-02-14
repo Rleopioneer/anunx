@@ -30,6 +30,10 @@ const useStyles = makeStyles((theme) => ({
   loading: {
     display: 'block',
     margin: '10px auto',
+  },
+  
+  errorMessage: {
+    margin: '20px 0'
   }
 
 }))
