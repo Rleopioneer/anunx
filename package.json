@@ -13,6 +13,7 @@
     "@material-ui/lab": "^4.0.0-alpha.61",
     "axios": "^1.3.2",
     "bcrypt": "^5.1.0",
+    "eslint": "^8.34.0",
     "formik": "^2.2.9",
     "mongoose": "^6.9.0",
     "next": "13.1.4",
@@ -23,5 +24,8 @@
     "react-dropzone": "11.3.4",
     "react-material-ui-carousel": "v2",
     "yup": "^0.32.11"
+  },
+  "optionalDependencies": {
+    "mongodb": "^5.0.1"
   }
 }

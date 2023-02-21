@@ -1,4 +1,5 @@
 import { Formik } from 'formik'
+import Image from 'next/image'
 
 import axios from 'axios'
 import { useRouter } from 'next/router'
@@ -41,6 +42,12 @@ const Signin = () => {
     })
    }
 
+   const handleGoogleLogin = () => {
+    signIn('google', {
+      callbackUrl: 'http://localhost:3000/user/dashboard'
+    })
+   }
+
   return (
     <TemplateDefault>
 
@@ -50,95 +57,113 @@ const Signin = () => {
         </Typography>
       </Container>
 
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleFormSubmit}
-      >
-        {
-          ({
-            touched,
-            values,
-            errors,
-            isSubmitting,
-            handleChange,
-            handleSubmit,
-            setFieldValue,
-          }) => {
+      <Container maxWidth='md' className={classes.boxContainer}>
+        <Box className={classes.box}>
+          <Box display='flex' justifyContent='center'>
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={handleGoogleLogin}
+              startIcon={
+                <Image
+                  src='/images/logo_google.svg'
+                  width={20}
+                  height={20}
+                  alt='Login do Google'
+                />
+              }
+            >Entrar com Google</Button>
+          </Box>
 
-            return(
-              <form onSubmit={handleSubmit}>
-                {
-                  router.query.i === '1'
-                    ? (
-                      <Alert severity='error' className={classes.errorMessage}>Usuário ou senha inválidos</Alert>
-                    )
-                    : null
-                }
+          <Box className={classes.orSeparator}>
+            <span>ou</span>
+          </Box>
 
-                <Container maxWidth='md' className={classes.boxContainer}>
-                  <Box className={classes.box}>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={handleFormSubmit}
+          >
+            {
+              ({
+                touched,
+                values,
+                errors,
+                isSubmitting,
+                handleChange,
+                handleSubmit,
+                setFieldValue,
+              }) => {
 
-                    <FormControl fullWidth error={errors.email && touched.email} className={classes.formControl}>
-                      <InputLabel className={classes.inputLabel}>E-mail</InputLabel>
-                      <Input
-                        name='email'
-                        type='email'
-                        value={values.email}
-                        onChange={handleChange}             
-                      />
-                      <FormHelperText>
-                        {errors.email && touched.email ? errors.email : null}         
-                      </FormHelperText>
+                return(
+                  <form onSubmit={handleSubmit}>
+                    {
+                      router.query.i === '1'
+                        ? (
+                          <Alert severity='error' className={classes.errorMessage}>Usuário ou senha inválidos</Alert>
+                        )
+                        : null
+                    }
 
-                    </FormControl>
 
-                    <FormControl fullWidth error={errors.password && touched.password} className={classes.formControl}>
-                      <InputLabel className={classes.inputLabel}>Senha</InputLabel>
-                      <Input
-                        type='password'
-                        name='password'
-                        value={values.password}
-                        onChange={handleChange}            
-                      />
-                      <FormHelperText>
-                        {errors.password && touched.password ? errors.password : null}         
-                      </FormHelperText>
+                        <FormControl fullWidth error={errors.email && touched.email} className={classes.formControl}>
+                          <InputLabel className={classes.inputLabel}>E-mail</InputLabel>
+                          <Input
+                            name='email'
+                            type='email'
+                            value={values.email}
+                            onChange={handleChange}             
+                          />
+                          <FormHelperText>
+                            {errors.email && touched.email ? errors.email : null}         
+                          </FormHelperText>
 
-                    </FormControl>
+                        </FormControl>
 
-                    <br /><br />
+                        <FormControl fullWidth error={errors.password && touched.password} className={classes.formControl}>
+                          <InputLabel className={classes.inputLabel}>Senha</InputLabel>
+                          <Input
+                            type='password'
+                            name='password'
+                            value={values.password}
+                            onChange={handleChange}            
+                          />
+                          <FormHelperText>
+                            {errors.password && touched.password ? errors.password : null}         
+                          </FormHelperText>
 
-                    <Box textAlign='left' className={classes.boxButton}>
-                      {
-                        isSubmitting 
-                          ? (
-                            <CircularProgress className={classes.loading} />
-                          ) : (
-                            <Button
-                              type='submit'
-                              variant='contained'
-                              color='primary'
-                              fullWidth
-                              className={classes.button}>
-                                Entrar
-                            </Button>
-                          )
-                      }
-                    </Box>
+                        </FormControl>
 
-                  </Box>
+                        <br /><br />
 
-                </Container>
+                        <Box textAlign='left' className={classes.boxButton}>
+                          {
+                            isSubmitting 
+                              ? (
+                                <CircularProgress className={classes.loading} />
+                              ) : (
+                                <Button
+                                  type='submit'
+                                  variant='contained'
+                                  color='primary'
+                                  fullWidth
+                                  className={classes.button}>
+                                    Entrar
+                                </Button>
+                              )
+                          }
 
-              </form>
-            )
+                        </Box>
+                  </form>
+                )
+                
+              }
+              
+            }
 
-          }
-
-        }
-
-      </Formik>
+          </Formik>
+        </Box>
+      </Container>
 
     </TemplateDefault>
   )
