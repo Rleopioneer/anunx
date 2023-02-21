@@ -7,6 +7,7 @@ import theme from '../src/theme'
 import { ToastyProvider } from '../src/contexts/Toasty'
 import { ThemeProvider } from '@material-ui/core/styles'
 import { Provider } from 'next-auth/client'
+import CheckAuth from '../src/components/CheckAuth'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 
@@ -23,7 +24,11 @@ export default function MyApp(props) {
         <ThemeProvider theme={theme}>
           <ToastyProvider>
             <CssBaseline />
-            <Component {...pageProps} />
+            {
+              Component.requireAuth
+                ? <CheckAuth Component={Component} pageProps={pageProps}/>
+                : <Component {...pageProps} />   
+            }
           </ToastyProvider>
         </ThemeProvider>
       </Provider>
